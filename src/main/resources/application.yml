@@ -1,0 +1,42 @@
+server:
+  port: 8888
+  
+management:
+  security:
+    enabled: false
+          
+---
+spring:
+    profiles: docker
+    cloud:
+      config:
+        server:
+          git:
+            uri: ssh://git@github.com/bapodara/springboot12factorconfig.git                           
+logging:
+  level:
+    org.springframework.cloud.consul: DEBUG
+
+---
+spring:
+    profiles: github
+    cloud:
+      config:
+        server:
+          git:
+            uri: ssh://git@github.com:bapodara/springboot12factorconfig.git
+---
+spring:
+  profiles: mesos
+  cloud:
+    consul:
+      ribbon:
+        enabled: true
+      discovery:
+        enabled: true
+        hearbeat:
+          enabled: true
+        catalogServicesWatch:
+          enabled: true
+        register: false
+        registerHealthCheck: false

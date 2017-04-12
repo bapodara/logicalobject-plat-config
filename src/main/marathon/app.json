@@ -1,0 +1,59 @@
+{
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "484695107796.dkr.ecr.us-west-2.amazonaws.com/csl/csl-plat-config:latest",
+      "forcePullImage": true,
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+                "containerPort": 8888,
+                "hostPort": 0,
+                "servicePort": 8888,
+                "protocol": "tcp"
+        }
+      ],
+      "ports": [
+           8888
+       ]
+    },
+	"env":
+	{
+	 "SPRING_PROFILES_ACTIVE": "mesos,bitbucket"
+	},
+    "volumes": [
+    {
+      "containerPath": "/var/log",
+      "hostPath": "/var/log",
+      "mode": "RW"
+    },
+	{
+		"containerPath": "/root/.ssh/id_rsa",
+		"hostPath": "/root/.ssh/id_rsa",
+		"mode": "RW"
+	}
+    ]
+  },
+  "id": "csl-plat-config",
+  "instances": 1,
+  "cpus": 1,
+  "mem": 1024,
+  "uris": [
+      "file:///etc/docker.tar.gz"
+  ],
+  "constraints": [
+      ["hostname", "CLUSTER", "10.65.60.32"]
+  ],
+  "healthChecks": [
+  {
+    "path": "/health",
+    "portIndex": 0,
+    "protocol": "TCP",
+    "gracePeriodSeconds": 300,
+    "intervalSeconds": 60,
+    "timeoutSeconds": 60,
+    "maxConsecutiveFailures": 3,
+    "ignoreHttp1xx": false
+  }
+  ]
+}
